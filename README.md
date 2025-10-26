@@ -36,6 +36,3 @@ Application Android développée en Kotlin pour gérer une bibliothèque en lign
 
 ## Auteur
 **KARIM**
-
-## Date
-2025/2026
