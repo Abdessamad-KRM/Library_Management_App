@@ -32,7 +32,7 @@ Application Android développée en Kotlin pour gérer une bibliothèque en lign
 
 ## Captures d'écran
 
-<img src="screenshots/app_interface.png" width="250"> <img src="screenshots/ajout_livre.png" width="250"> <img src="screenshots/liste_livres.png" width="250">
+<img src="screenshots/app_interface.png" width="250"> <img src="screenshots/ajout_livre.png" width="250"> <img src="screenshots/liste_livres.png" width="250"> <img src="screenshots/dialog_details.png" width="250">
 
 ## Auteur
 **KARIM**
