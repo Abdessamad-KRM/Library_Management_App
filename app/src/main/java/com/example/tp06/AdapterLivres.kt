@@ -2,6 +2,9 @@ package com.example.tp06
 
 import android.app.AlertDialog
 import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,50 +42,24 @@ class AdapterLivres(private val listeLivres: List<Livre>) : RecyclerView.Adapter
             .into(holder.imageLivre)
 
         holder.itemView.setOnClickListener {
-            val builder = AlertDialog.Builder(holder.itemView.context)
-            builder.setTitle("Informations du livre")
+            val context = holder.itemView.context
+            val dispoText = if (livre.disponible) "Disponible" else "Non disponible"
+            val dispoColor = if (livre.disponible) Color.GREEN else Color.RED
 
-            val disponibiliteText = if (livre.disponible) "Disponible" else "Non disponible"
-            val disponibiliteColor = if (livre.disponible) Color.GREEN else Color.RED
+            val message = "\nTitre : ${livre.titre}\n\nPrix : ${livre.prix} DH\n\nDisponibilité : $dispoText"
 
-            val layout = android.widget.LinearLayout(holder.itemView.context)
-            layout.orientation = android.widget.LinearLayout.VERTICAL
-            layout.setPadding(50, 40, 50, 40)
-
-            val textTitre = TextView(holder.itemView.context)
-            textTitre.text = "Titre: ${livre.titre}"
-            textTitre.textSize = 16f
-
-            val textPrix = TextView(holder.itemView.context)
-            textPrix.text = "\nPrix: ${livre.prix} DH"
-            textPrix.textSize = 16f
-
-            val textDisponibilite = TextView(holder.itemView.context)
-            val disponibiliteComplet = "\nDisponibilité: $disponibiliteText"
-            val spannable = android.text.SpannableString(disponibiliteComplet)
-
-            val debutCouleur = disponibiliteComplet.indexOf(disponibiliteText)
-            spannable.setSpan(
-                android.text.style.ForegroundColorSpan(disponibiliteColor),
-                debutCouleur,
-                disponibiliteComplet.length,
-                android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-
-            textDisponibilite.text = spannable
-            textDisponibilite.textSize = 16f
-
-            layout.addView(textTitre)
-            layout.addView(textPrix)
-            layout.addView(textDisponibilite)
-
-            builder.setView(layout)
-            builder.setPositiveButton("OK") { dialog, _ ->
-                dialog.dismiss()
+            val spannable = SpannableString(message).apply {
+                val start = message.indexOf(dispoText)
+                setSpan(ForegroundColorSpan(dispoColor), start, start + dispoText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
 
-            builder.show()
+            AlertDialog.Builder(context)
+                .setTitle("Informations du livre")
+                .setMessage(spannable)
+                .setPositiveButton("OK", null)
+                .show()
         }
+
     }
 
     override fun getItemCount(): Int {
