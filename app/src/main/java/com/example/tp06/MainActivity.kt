@@ -4,10 +4,16 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.core.view.ViewCompat
+import androidx.core.view.updatePadding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var editTitre: EditText
@@ -15,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editImage: EditText
     private lateinit var checkDisponible: CheckBox
     private lateinit var btnAjouter: Button
+    private lateinit var btnSwitch: Switch
     private lateinit var recyclerViewLivres: RecyclerView
     private val listeLivres = mutableListOf<Livre>()
     private lateinit var adapter: AdapterLivres
@@ -22,6 +29,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val rootLayout = findViewById<LinearLayout>(R.id.rootLayout)
+        ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { view, insets ->
+            val statusBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top
+            view.updatePadding(top = statusBarHeight + 16) // add your normal padding
+            insets
+        }
 
         editTitre = findViewById(R.id.editTitre)
         editPrix = findViewById(R.id.editPrix)
@@ -29,6 +42,15 @@ class MainActivity : AppCompatActivity() {
         checkDisponible = findViewById(R.id.checkDisponible)
         btnAjouter = findViewById(R.id.btnAjouter)
         recyclerViewLivres = findViewById(R.id.recyclerViewLivres)
+        btnSwitch = findViewById(R.id.switchDarkMode)
+
+        btnSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
 
         listeLivres.add(Livre("L'Étranger", 150.0, "https://m.media-amazon.com/images/I/71da7Rske9L._AC_UF1000,1000_QL80_.jpg", true))
         listeLivres.add(Livre("1984", 180.0, "https://m.media-amazon.com/images/I/71rpa1-kyvL._AC_UF1000,1000_QL80_.jpg", true))
